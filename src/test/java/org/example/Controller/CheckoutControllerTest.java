@@ -2,6 +2,7 @@ package org.example.Controller;
 
 import org.example.Model.RentalAgreement;
 import org.example.Model.ToolBrand;
+import org.example.Model.ToolCode;
 import org.example.Model.ToolType;
 import org.example.Service.CheckoutService;
 import org.example.Service.InputValidationService;
@@ -13,9 +14,10 @@ import org.mockito.ArgumentCaptor;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
-public class CheckoutControllerIntegrationTest {
+public class CheckoutControllerTest {
 
     private CheckoutView checkoutView;
     private InputValidationService inputValidationService;
@@ -49,10 +51,13 @@ public class CheckoutControllerIntegrationTest {
         when(checkoutView.getCheckoutDate()).thenReturn(checkoutDate);
 
         // Act
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
         checkoutController.processCheckout();
+        });
 
         // Assert
-        verify(checkoutView).displayDiscountPercentError();
+
+        assertEquals("Invalid discount percent, must be greater than 0 and less than 100", exception.getMessage());
     }
 
     @Test
@@ -114,6 +119,7 @@ public class CheckoutControllerIntegrationTest {
 
         // Assert
         verify(checkoutView).closeScanner();
+        // 
         ArgumentCaptor<RentalAgreement> captor = ArgumentCaptor.forClass(RentalAgreement.class);
         verify(checkoutView).displayRentalAgreement(captor.capture());
 
@@ -188,6 +194,7 @@ public class CheckoutControllerIntegrationTest {
         verify(checkoutView).displayRentalAgreement(captor.capture());
 
         RentalAgreement rentalAgreement = captor.getValue();
+        assertEquals(ToolCode.JAKR, rentalAgreement.getToolCode());
         assertEquals(ToolType.Jackhammer, rentalAgreement.getToolType());
         assertEquals(ToolBrand.Ridgid, rentalAgreement.getToolBrand());
         assertEquals(rentalDayCount, rentalAgreement.getRentalDays());

@@ -2,6 +2,11 @@ package org.example.Service;
 
 import org.example.Model.ToolCode;
 
+/**
+ * Validates the given input is correct
+ *
+ * @author rakeen huq
+ */
 public class InputValidationService {
 
     /**
@@ -26,10 +31,7 @@ public class InputValidationService {
      * @return true if the rental day count is valid, false otherwise
      */
     public boolean validateRentalDayCount(int rentalDayCount) {
-        if (rentalDayCount < 1) {
-            throw new IllegalArgumentException("Rental day count must be greater than 0");
-        }
-        return true;
+        return rentalDayCount >= 1;
     }
 
     /**
@@ -39,10 +41,7 @@ public class InputValidationService {
      * @return true if the discount percent is valid, false otherwise
      */
     public boolean validateDiscountPercent(int discountPercent) {
-        if (discountPercent < 0 || discountPercent > 100) {
-            throw new IllegalArgumentException("Discount percent must be between 0 and 100");
-        }
-        return true;
+        return discountPercent >= 0 && discountPercent <= 100;
     }
 }
 

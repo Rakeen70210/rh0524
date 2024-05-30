@@ -11,7 +11,7 @@ import org.example.View.CheckoutView;
 public class Main {
     /**
      * Main Class serving as entry point for the application
-     * @param args
+     * @param args no arguments
      */
     public static void main(String[] args) {
         CheckoutView checkoutView = new CheckoutView();

@@ -19,9 +19,9 @@ public class CheckoutController {
 
     /**
      * Constructor for the checkout controller
-     * 
-     * @param checkoutView            the checkout view
-     * @param inputValidationService   the input validation service
+     *
+     * @param checkoutView           the checkout view
+     * @param inputValidationService the input validation service
      */
     public CheckoutController(CheckoutView checkoutView, InputValidationService inputValidationService) {
         this.checkoutView = checkoutView;
@@ -46,44 +46,35 @@ public class CheckoutController {
 
     private String getValidatedToolCode() {
         String toolCode;
-        while (true) {
-            toolCode = checkoutView.getToolCode();
-            if (inputValidationService.validateToolCode(toolCode)) {
-                break;
-            } else {
-                checkoutView.displayToolCodeError();
-            }
+        toolCode = checkoutView.getToolCode();
+        if (inputValidationService.validateToolCode(toolCode)) {
+            return toolCode;
+        } else {
+            throw new IllegalArgumentException("Invalid tool code");
         }
-        return toolCode;
+
     }
 
     private int getValidatedRentalDayCount() {
         int rentalDayCount;
-        while (true) {
-            rentalDayCount = checkoutView.getRentalDayCount();
-            try {
-                if (inputValidationService.validateRentalDayCount(rentalDayCount)) {
-                    break;
-                }
-            } catch (IllegalArgumentException e) {
-                checkoutView.displayRentalDayCountError();
-            }
+        rentalDayCount = checkoutView.getRentalDayCount();
+        if (inputValidationService.validateRentalDayCount(rentalDayCount)) {
+            return rentalDayCount;
+        } else {
+            throw new IllegalArgumentException("Invalid rental day count, must be greater than 0");
         }
-        return rentalDayCount;
     }
 
     private int getValidatedDiscountPercent() {
         int discountPercent;
-        while (true) {
-            discountPercent = checkoutView.getDiscountPercent();
-            try {
-                if (inputValidationService.validateDiscountPercent(discountPercent)) {
-                    break;
-                }
-            } catch (IllegalArgumentException e) {
-                checkoutView.displayDiscountPercentError();
-            }
+        discountPercent = checkoutView.getDiscountPercent();
+
+        if (inputValidationService.validateDiscountPercent(discountPercent)) {
+            return discountPercent;
+        } else {
+            throw new IllegalArgumentException("Invalid discount percent, must be greater than 0 and less than 100");
         }
-        return discountPercent;
+
+
     }
 }

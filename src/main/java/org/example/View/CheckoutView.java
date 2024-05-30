@@ -70,7 +70,6 @@ public class CheckoutView {
      */
     public void displayToolCodeError() {
         System.out.println("Invalid Tool Code.");
-
     }
 
     /**
@@ -95,14 +94,6 @@ public class CheckoutView {
     }
 
     /**
-     * Displays an error message when the user enters an invalid rental day count
-     *
-     */
-    public void displayRentalDayCountError() {
-        System.out.println("Invalid Rental Day Count. Please enter a number greater than 0.");
-    }
-
-    /**
      * Collects input from the user to determine the discount percentage
      *
      * @return the discount percentage
@@ -120,14 +111,6 @@ public class CheckoutView {
                 scanner.nextLine();
             }
         }
-    }
-
-    /**
-     * Displays an error message when the user enters an invalid discount percentage
-     *
-     */
-    public void displayDiscountPercentError() {
-        System.out.println("Invalid discount percent. Please enter a value between 0 and 100.");
     }
 
     /**
@@ -162,6 +145,8 @@ public class CheckoutView {
         NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(Locale.US);
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM/dd/yy");
 
+
+        System.out.println("Tool Code: " + rentalAgreement.getToolCode());
         System.out.println("Tool Type: " + rentalAgreement.getToolType());
         System.out.println("Tool Brand: " + rentalAgreement.getToolBrand());
         System.out.println("Rental Days: " + rentalAgreement.getRentalDays());

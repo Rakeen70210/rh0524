@@ -2,6 +2,7 @@ package org.example.View;
 
 import org.example.Model.RentalAgreement;
 import org.example.Model.ToolBrand;
+import org.example.Model.ToolCode;
 import org.example.Model.ToolType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,7 +20,6 @@ import java.time.ZoneId;
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class CheckoutViewTest {
 
@@ -35,10 +35,10 @@ public class CheckoutViewTest {
 
     @ParameterizedTest
     @CsvSource({
-        "LADW, LADW",
-        "CHNS, CHNS",
-        "JAKR, JAKR",
-        "JAKD, JAKD"
+            "LADW, LADW",
+            "CHNS, CHNS",
+            "JAKR, JAKR",
+            "JAKD, JAKD"
     })
     public void testGetToolCode(String input, String expected) {
         System.setIn(new ByteArrayInputStream((input + "\n").getBytes()));
@@ -50,11 +50,11 @@ public class CheckoutViewTest {
 
     @ParameterizedTest
     @CsvSource({
-        "5, 5",
-        "3, 3",
-        "6, 6",
-        "4, 4",
-        "9, 9"
+            "5, 5",
+            "3, 3",
+            "6, 6",
+            "4, 4",
+            "9, 9"
     })
     public void testGetRentalDayCount(String input, int expected) {
         System.setIn(new ByteArrayInputStream((input + "\n").getBytes()));
@@ -66,11 +66,11 @@ public class CheckoutViewTest {
 
     @ParameterizedTest
     @CsvSource({
-        "101, 101",
-        "10, 10",
-        "25, 25",
-        "0, 0",
-        "50, 50"
+            "101, 101",
+            "10, 10",
+            "25, 25",
+            "0, 0",
+            "50, 50"
     })
     public void testGetDiscountPercent(String input, int expected) {
         System.setIn(new ByteArrayInputStream((input + "\n").getBytes()));
@@ -82,10 +82,10 @@ public class CheckoutViewTest {
 
     @ParameterizedTest
     @CsvSource({
-        "9/3/15, 09/03/15",
-        "7/2/20, 07/02/20",
-        "7/2/15, 07/02/15"
-        })
+            "9/3/15, 09/03/15",
+            "7/2/20, 07/02/20",
+            "7/2/15, 07/02/15"
+    })
     public void testGetCheckoutDate(String input, String expected) throws ParseException {
         System.setIn(new ByteArrayInputStream((input + "\n").getBytes()));
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yy");
@@ -105,24 +105,9 @@ public class CheckoutViewTest {
     }
 
     @Test
-    public void testDisplayRentalDayCountError() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            checkoutView.displayRentalDayCountError();
-        });
-        assertEquals("Invalid Rental Day Count. Please enter a number greater than 0.", exception.getMessage());
-    }
-
-    @Test
-    public void testDisplayDiscountPercentError() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            checkoutView.displayDiscountPercentError();
-        });
-        assertEquals("Invalid discount percent. Please enter a value between 0 and 100.", exception.getMessage());
-    }
-
-    @Test
     public void testDisplayRentalAgreement() {
         RentalAgreement rentalAgreement = Mockito.mock(RentalAgreement.class);
+        Mockito.when(rentalAgreement.getToolCode()).thenReturn(ToolCode.LADW);
         Mockito.when(rentalAgreement.getToolType()).thenReturn(ToolType.Ladder);
         Mockito.when(rentalAgreement.getToolBrand()).thenReturn(ToolBrand.Werner);
         Mockito.when(rentalAgreement.getRentalDays()).thenReturn(5);
@@ -137,7 +122,7 @@ public class CheckoutViewTest {
 
         checkoutView.displayRentalAgreement(rentalAgreement);
 
-        String expectedOutput = "Tool Type: Ladder\n" +
+        String expectedOutput = "Tool Code: LADW\n" + "Tool Type: Ladder\n" +
                 "Tool Brand: Werner\n" +
                 "Rental Days: 5\n" +
                 "Checkout Date: 10/01/23\n" +

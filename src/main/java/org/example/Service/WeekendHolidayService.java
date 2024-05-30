@@ -4,6 +4,11 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Month;
 
+/**
+ * Service class to calculate number of weekdays, weekends, and holidays
+ *
+ * @author rakeen huq
+ */
 public class WeekendHolidayService {
     private final LocalDate checkoutDate;
     private final LocalDate endDate;

@@ -1,19 +1,12 @@
 package org.example.Service;
 
+import org.example.Model.*;
+import org.example.Repository.ToolMap;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
-
-import org.example.Model.RentalAgreement;
-import org.example.Model.Tool;
-import org.example.Model.ToolBrand;
-import org.example.Model.ToolCode;
-import org.example.Model.ToolType;
-import org.example.Repository.ToolMap;
 
 /**
  * Represents the checkout process
@@ -48,7 +41,7 @@ public class CheckoutService {
         double discountAmount = getDiscountAmount(discountPercent, preDiscountCharge);
         double finalCharge = preDiscountCharge - discountAmount;
 
-        this.rentalAgreement = new RentalAgreement(toolType, toolBrand, rentalDays, checkoutDate, dueDate,
+        this.rentalAgreement = new RentalAgreement(ToolCode.valueOf(toolCode), toolType, toolBrand, rentalDays, checkoutDate, dueDate,
                 dailyRentalCharge, chargeDays, preDiscountCharge, discountPercent, discountAmount, finalCharge);
 
     }

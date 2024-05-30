@@ -10,8 +10,8 @@ public class Tool {
 
     /**
      * instantiates the tool and brand
-     * @param toolType
-     * @param toolBrand
+     * @param toolType the tool type
+     * @param toolBrand the tool brand
      */
     public Tool(ToolType toolType, ToolBrand toolBrand) {
         this.toolType = toolType;
