@@ -1,7 +1,6 @@
 package org.example;
 
 import org.example.Controller.CheckoutController;
-import org.example.Service.CheckoutService;
 import org.example.Service.InputValidationService;
 import org.example.View.CheckoutView;
 
@@ -18,5 +17,6 @@ public class Main {
         CheckoutView checkoutView = new CheckoutView();
         InputValidationService inputValidationService = new InputValidationService();
         CheckoutController checkoutController = new CheckoutController(checkoutView, inputValidationService);
+        checkoutController.processCheckout();
     }
 }

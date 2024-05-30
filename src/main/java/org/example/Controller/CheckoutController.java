@@ -1,11 +1,11 @@
 package org.example.Controller;
 
-import java.time.LocalDate;
-
 import org.example.Model.RentalAgreement;
 import org.example.Service.CheckoutService;
 import org.example.Service.InputValidationService;
 import org.example.View.CheckoutView;
+
+import java.time.LocalDate;
 
 /**
  * Controller class responsible for communicating between all other components
@@ -26,11 +26,12 @@ public class CheckoutController {
     public CheckoutController(CheckoutView checkoutView, InputValidationService inputValidationService) {
         this.checkoutView = checkoutView;
         this.inputValidationService = inputValidationService;
-
-        processCheckout();
     }
 
-    private void processCheckout() {
+    /**
+     * Processes the checkout process
+     */
+    public void processCheckout() {
         String toolCode = getValidatedToolCode();
         int rentalDayCount = getValidatedRentalDayCount();
         int discountPercent = getValidatedDiscountPercent();
@@ -60,9 +61,11 @@ public class CheckoutController {
         int rentalDayCount;
         while (true) {
             rentalDayCount = checkoutView.getRentalDayCount();
-            if (inputValidationService.validateRentalDayCount(rentalDayCount)) {
-                break;
-            } else {
+            try {
+                if (inputValidationService.validateRentalDayCount(rentalDayCount)) {
+                    break;
+                }
+            } catch (IllegalArgumentException e) {
                 checkoutView.displayRentalDayCountError();
             }
         }
@@ -73,9 +76,11 @@ public class CheckoutController {
         int discountPercent;
         while (true) {
             discountPercent = checkoutView.getDiscountPercent();
-            if (inputValidationService.validateDiscountPercent(discountPercent)) {
-                break;
-            } else {
+            try {
+                if (inputValidationService.validateDiscountPercent(discountPercent)) {
+                    break;
+                }
+            } catch (IllegalArgumentException e) {
                 checkoutView.displayDiscountPercentError();
             }
         }

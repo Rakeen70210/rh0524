@@ -99,7 +99,7 @@ public class CheckoutView {
      *
      */
     public void displayRentalDayCountError() {
-        throw new IllegalArgumentException("Invalid Rental Day Count. Please enter a number greater than 0.");
+        System.out.println("Invalid Rental Day Count. Please enter a number greater than 0.");
     }
 
     /**
@@ -127,7 +127,7 @@ public class CheckoutView {
      *
      */
     public void displayDiscountPercentError() {
-        throw new IllegalArgumentException("Invalid discount percent. Please enter a value between 0 and 100.");
+        System.out.println("Invalid discount percent. Please enter a value between 0 and 100.");
     }
 
     /**

@@ -26,7 +26,10 @@ public class InputValidationService {
      * @return true if the rental day count is valid, false otherwise
      */
     public boolean validateRentalDayCount(int rentalDayCount) {
-        return rentalDayCount >= 1;
+        if (rentalDayCount < 1) {
+            throw new IllegalArgumentException("Rental day count must be greater than 0");
+        }
+        return true;
     }
 
     /**
@@ -36,7 +39,10 @@ public class InputValidationService {
      * @return true if the discount percent is valid, false otherwise
      */
     public boolean validateDiscountPercent(int discountPercent) {
-        return discountPercent >= 0 && discountPercent <= 100;
+        if (discountPercent < 0 || discountPercent > 100) {
+            throw new IllegalArgumentException("Discount percent must be between 0 and 100");
+        }
+        return true;
     }
 }
 
