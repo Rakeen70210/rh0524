@@ -4,7 +4,6 @@ import org.example.Model.RentalAgreement;
 import org.example.Model.ToolBrand;
 import org.example.Model.ToolCode;
 import org.example.Model.ToolType;
-import org.example.Service.CheckoutService;
 import org.example.Service.InputValidationService;
 import org.example.View.CheckoutView;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,7 +20,6 @@ public class CheckoutControllerTest {
 
     private CheckoutView checkoutView;
     private InputValidationService inputValidationService;
-    private CheckoutService checkoutService;
     private CheckoutController checkoutController;
 
     @BeforeEach
@@ -33,6 +31,7 @@ public class CheckoutControllerTest {
 
     @Test
     public void testProcessCheckoutIntegration_Test1() {
+        System.out.println("Test Scenario 1");
         // Arrange
         String toolCode = "JAKR";
         LocalDate checkoutDate = LocalDate.of(2015, 9, 3);
@@ -62,11 +61,19 @@ public class CheckoutControllerTest {
 
     @Test
     public void testProcessCheckoutIntegration_Test2() {
+        System.out.println("\nTest Scenario 2");
         // Arrange
         String toolCode = "LADW";
-        LocalDate checkoutDate = LocalDate.of(2020, 7, 2);
         int rentalDayCount = 3;
+        LocalDate checkoutDate = LocalDate.of(2020, 7, 2);
+        LocalDate dueDate = LocalDate.of(2020, 7, 5);
+        double dailyRentalCharge = 1.99;
+        int chargeDays = 2;
+        double preDiscountCharge = 3.98;
         int discountPercent = 10;
+        double discountAmount = 0.40;
+        double finalCharge = 3.58;
+
 
         when(checkoutView.getToolCode()).thenReturn(toolCode);
         when(inputValidationService.validateToolCode(toolCode)).thenReturn(true);
@@ -87,21 +94,40 @@ public class CheckoutControllerTest {
         ArgumentCaptor<RentalAgreement> captor = ArgumentCaptor.forClass(RentalAgreement.class);
         verify(checkoutView).displayRentalAgreement(captor.capture());
 
+
         RentalAgreement rentalAgreement = captor.getValue();
+        assertEquals(ToolCode.LADW, rentalAgreement.getToolCode());
         assertEquals(ToolType.Ladder, rentalAgreement.getToolType());
         assertEquals(ToolBrand.Werner, rentalAgreement.getToolBrand());
         assertEquals(rentalDayCount, rentalAgreement.getRentalDays());
-        assertEquals(discountPercent, rentalAgreement.getDiscountPercent());
         assertEquals(checkoutDate, rentalAgreement.getCheckoutDate());
+        assertEquals(dueDate, rentalAgreement.getDueDate());
+        assertEquals(dailyRentalCharge, rentalAgreement.getDailyRentalCharge());
+        assertEquals(chargeDays, rentalAgreement.getChargeDays());
+        assertEquals(preDiscountCharge, rentalAgreement.getPreDiscountCharge());
+        assertEquals(discountPercent, rentalAgreement.getDiscountPercent());
+        assertEquals(discountAmount, rentalAgreement.getDiscountAmount());
+        assertEquals(finalCharge, rentalAgreement.getFinalCharge());
+
+        checkoutView = new CheckoutView();
+        checkoutView.displayRentalAgreement(rentalAgreement);
     }
 
     @Test
     public void testProcessCheckoutIntegration_Test3() {
+        System.out.println("\nTest Scenario 3");
         // Arrange
         String toolCode = "CHNS";
-        LocalDate checkoutDate = LocalDate.of(2015, 7, 2);
         int rentalDayCount = 5;
+        LocalDate checkoutDate = LocalDate.of(2015, 7, 2);
+        LocalDate dueDate = LocalDate.of(2015, 7, 7);
+        double dailyRentalCharge = 1.49;
+        int chargeDays = 4;
+        double preDiscountCharge = 5.96;
         int discountPercent = 25;
+        double discountAmount = 1.49;
+        double finalCharge = 4.47;
+
 
         when(checkoutView.getToolCode()).thenReturn(toolCode);
         when(inputValidationService.validateToolCode(toolCode)).thenReturn(true);
@@ -124,20 +150,37 @@ public class CheckoutControllerTest {
         verify(checkoutView).displayRentalAgreement(captor.capture());
 
         RentalAgreement rentalAgreement = captor.getValue();
+        assertEquals(ToolCode.CHNS, rentalAgreement.getToolCode());
         assertEquals(ToolType.Chainsaw, rentalAgreement.getToolType());
         assertEquals(ToolBrand.Stihl, rentalAgreement.getToolBrand());
         assertEquals(rentalDayCount, rentalAgreement.getRentalDays());
-        assertEquals(discountPercent, rentalAgreement.getDiscountPercent());
         assertEquals(checkoutDate, rentalAgreement.getCheckoutDate());
+        assertEquals(dueDate, rentalAgreement.getDueDate());
+        assertEquals(dailyRentalCharge, rentalAgreement.getDailyRentalCharge());
+        assertEquals(chargeDays, rentalAgreement.getChargeDays());
+        assertEquals(preDiscountCharge, rentalAgreement.getPreDiscountCharge());
+        assertEquals(discountPercent, rentalAgreement.getDiscountPercent());
+        assertEquals(discountAmount, rentalAgreement.getDiscountAmount());
+        assertEquals(finalCharge, rentalAgreement.getFinalCharge());
+
+        checkoutView = new CheckoutView();
+        checkoutView.displayRentalAgreement(rentalAgreement);
     }
 
     @Test
     public void testProcessCheckoutIntegration_Test4() {
+        System.out.println("\nTest Scenario 4");
         // Arrange
         String toolCode = "JAKD";
-        LocalDate checkoutDate = LocalDate.of(2015, 9, 3);
         int rentalDayCount = 6;
+        LocalDate checkoutDate = LocalDate.of(2015, 9, 3);
+        LocalDate dueDate = LocalDate.of(2015, 9, 9);
+        double dailyRentalCharge = 2.99;
+        int chargeDays = 4;
+        double preDiscountCharge = 11.96;
         int discountPercent = 0;
+        double discountAmount = 0;
+        double finalCharge = 11.96;
 
         when(checkoutView.getToolCode()).thenReturn(toolCode);
         when(inputValidationService.validateToolCode(toolCode)).thenReturn(true);
@@ -159,20 +202,37 @@ public class CheckoutControllerTest {
         verify(checkoutView).displayRentalAgreement(captor.capture());
 
         RentalAgreement rentalAgreement = captor.getValue();
+        assertEquals(ToolCode.JAKD, rentalAgreement.getToolCode());
         assertEquals(ToolType.Jackhammer, rentalAgreement.getToolType());
         assertEquals(ToolBrand.Dewalt, rentalAgreement.getToolBrand());
         assertEquals(rentalDayCount, rentalAgreement.getRentalDays());
-        assertEquals(discountPercent, rentalAgreement.getDiscountPercent());
         assertEquals(checkoutDate, rentalAgreement.getCheckoutDate());
+        assertEquals(dueDate, rentalAgreement.getDueDate());
+        assertEquals(dailyRentalCharge, rentalAgreement.getDailyRentalCharge());
+        assertEquals(chargeDays, rentalAgreement.getChargeDays());
+        assertEquals(preDiscountCharge, rentalAgreement.getPreDiscountCharge());
+        assertEquals(discountPercent, rentalAgreement.getDiscountPercent());
+        assertEquals(discountAmount, rentalAgreement.getDiscountAmount());
+        assertEquals(finalCharge, rentalAgreement.getFinalCharge());
+
+        checkoutView = new CheckoutView();
+        checkoutView.displayRentalAgreement(rentalAgreement);
     }
 
     @Test
     public void testProcessCheckoutIntegration_Test5() {
+        System.out.println("\nTest Scenario 5");
         // Arrange
         String toolCode = "JAKR";
-        LocalDate checkoutDate = LocalDate.of(2015, 7, 2);
         int rentalDayCount = 9;
+        LocalDate checkoutDate = LocalDate.of(2015, 7, 2);
+        LocalDate dueDate = LocalDate.of(2015, 7, 11);
+        double dailyRentalCharge = 2.99;
+        int chargeDays = 5;
+        double preDiscountCharge = 14.95;
         int discountPercent = 0;
+        double discountAmount = 0;
+        double finalCharge = 14.95;
 
         when(checkoutView.getToolCode()).thenReturn(toolCode);
         when(inputValidationService.validateToolCode(toolCode)).thenReturn(true);
@@ -198,17 +258,33 @@ public class CheckoutControllerTest {
         assertEquals(ToolType.Jackhammer, rentalAgreement.getToolType());
         assertEquals(ToolBrand.Ridgid, rentalAgreement.getToolBrand());
         assertEquals(rentalDayCount, rentalAgreement.getRentalDays());
-        assertEquals(discountPercent, rentalAgreement.getDiscountPercent());
         assertEquals(checkoutDate, rentalAgreement.getCheckoutDate());
+        assertEquals(dueDate, rentalAgreement.getDueDate());
+        assertEquals(dailyRentalCharge, rentalAgreement.getDailyRentalCharge());
+        assertEquals(chargeDays, rentalAgreement.getChargeDays());
+        assertEquals(preDiscountCharge, rentalAgreement.getPreDiscountCharge());
+        assertEquals(discountPercent, rentalAgreement.getDiscountPercent());
+        assertEquals(discountAmount, rentalAgreement.getDiscountAmount());
+        assertEquals(finalCharge, rentalAgreement.getFinalCharge());
+
+        checkoutView = new CheckoutView();
+        checkoutView.displayRentalAgreement(rentalAgreement);
     }
 
     @Test
     public void testProcessCheckoutIntegration_Test6() {
+        System.out.println("\nTest Scenario 6");
         // Arrange
         String toolCode = "JAKR";
-        LocalDate checkoutDate = LocalDate.of(2020, 7, 2);
         int rentalDayCount = 4;
+        LocalDate checkoutDate = LocalDate.of(2020, 7, 2);
+        LocalDate dueDate = LocalDate.of(2020, 7, 6);
+        double dailyRentalCharge = 2.99;
+        int chargeDays = 1;
+        double preDiscountCharge = 2.99;
         int discountPercent = 50;
+        double discountAmount = 1.50;
+        double finalCharge = 1.49;
 
         when(checkoutView.getToolCode()).thenReturn(toolCode);
         when(inputValidationService.validateToolCode(toolCode)).thenReturn(true);
@@ -230,10 +306,20 @@ public class CheckoutControllerTest {
         verify(checkoutView).displayRentalAgreement(captor.capture());
 
         RentalAgreement rentalAgreement = captor.getValue();
+        assertEquals(ToolCode.JAKR, rentalAgreement.getToolCode());
         assertEquals(ToolType.Jackhammer, rentalAgreement.getToolType());
         assertEquals(ToolBrand.Ridgid, rentalAgreement.getToolBrand());
         assertEquals(rentalDayCount, rentalAgreement.getRentalDays());
-        assertEquals(discountPercent, rentalAgreement.getDiscountPercent());
         assertEquals(checkoutDate, rentalAgreement.getCheckoutDate());
+        assertEquals(dueDate, rentalAgreement.getDueDate());
+        assertEquals(dailyRentalCharge, rentalAgreement.getDailyRentalCharge());
+        assertEquals(chargeDays, rentalAgreement.getChargeDays());
+        assertEquals(preDiscountCharge, rentalAgreement.getPreDiscountCharge());
+        assertEquals(discountPercent, rentalAgreement.getDiscountPercent());
+        assertEquals(discountAmount, rentalAgreement.getDiscountAmount());
+        assertEquals(finalCharge, rentalAgreement.getFinalCharge());
+
+        checkoutView = new CheckoutView();
+        checkoutView.displayRentalAgreement(rentalAgreement);
     }
 }

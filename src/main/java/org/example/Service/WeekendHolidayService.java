@@ -33,7 +33,7 @@ public class WeekendHolidayService {
     public int getWeekdayCount() {
         int weekdays = 0;
 
-        for (LocalDate currentDate = checkoutDate; currentDate.isBefore(endDate); currentDate = currentDate.plusDays(1)) {
+        for (LocalDate currentDate = checkoutDate; currentDate.isBefore(endDate.plusDays(1)); currentDate = currentDate.plusDays(1)) {
             if (!isWeekend(currentDate) && !isLaborDay(currentDate) && !isIndependenceDay(currentDate)) {
                 weekdays++;
             }
@@ -51,7 +51,7 @@ public class WeekendHolidayService {
     public int getHolidayCount(){
         int holidays = 0;
 
-        for (LocalDate currentDate = checkoutDate; currentDate.isBefore(endDate); currentDate = currentDate.plusDays(1)) {
+        for (LocalDate currentDate = checkoutDate; currentDate.isBefore(endDate.plusDays(1)); currentDate = currentDate.plusDays(1)) {
             if (isLaborDay(currentDate) || isIndependenceDay(currentDate)) {
                 holidays++;
             }
@@ -68,7 +68,7 @@ public class WeekendHolidayService {
     public int getWeekendCount(){
         int weekends = 0;
 
-        for (LocalDate currentDate = checkoutDate; currentDate.isBefore(endDate); currentDate = currentDate.plusDays(1)) {
+        for (LocalDate currentDate = checkoutDate; currentDate.isBefore(endDate.plusDays(1)); currentDate = currentDate.plusDays(1)) {
             if (isWeekend(currentDate)) {
                 weekends++;
             }

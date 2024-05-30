@@ -11,13 +11,10 @@ import java.time.temporal.ChronoUnit;
 /**
  * Represents the checkout process
  * 
- * @author rakeen huq
  */
 public class CheckoutService {
-    private WeekendHolidayService weekendHolidayService;
-    private ToolMap toolMap;
-    private Tool tool;
-    private RentalAgreement rentalAgreement;
+    private final WeekendHolidayService weekendHolidayService;
+    private final RentalAgreement rentalAgreement;
 
     /**
      * Constructor for the checkout service
@@ -29,21 +26,22 @@ public class CheckoutService {
      */
     public CheckoutService(LocalDate checkoutDate, int rentalDays, String toolCode, int discountPercent) {
         this.weekendHolidayService = new WeekendHolidayService(checkoutDate, rentalDays);
-        this.toolMap = ToolMap.getInstance();
-        this.tool = toolMap.getTool(ToolCode.valueOf(toolCode));
+        ToolMap toolMap = ToolMap.getInstance();
+        Tool tool = toolMap.getTool(ToolCode.valueOf(toolCode));
 
-        LocalDate dueDate = checkoutDate.plusDays(rentalDays);
+        LocalDate dueDate = calculateDueDate(checkoutDate, rentalDays);
         ToolType toolType = tool.getToolType();
         ToolBrand toolBrand = tool.getToolBrand();
         double dailyRentalCharge = toolType.getDailyCharge();
-        int chargeDays = getChargeDays(checkoutDate, dueDate, toolType);
-        double preDiscountCharge = getPreDiscountCharge(chargeDays, toolType);
-        double discountAmount = getDiscountAmount(discountPercent, preDiscountCharge);
-        double finalCharge = preDiscountCharge - discountAmount;
+        int chargeDays = calculateChargeDays(checkoutDate, dueDate, toolType);
+        double preDiscountCharge = calculatePreDiscountCharge(chargeDays, dailyRentalCharge);
+        double discountAmount = calculateDiscountAmount(discountPercent, preDiscountCharge);
+        double finalCharge = calculateFinalCharge(preDiscountCharge, discountAmount);
 
-        this.rentalAgreement = new RentalAgreement(ToolCode.valueOf(toolCode), toolType, toolBrand, rentalDays, checkoutDate, dueDate,
-                dailyRentalCharge, chargeDays, preDiscountCharge, discountPercent, discountAmount, finalCharge);
-
+        this.rentalAgreement = new RentalAgreement(
+                ToolCode.valueOf(toolCode), toolType, toolBrand, rentalDays, checkoutDate, dueDate,
+                dailyRentalCharge, chargeDays, preDiscountCharge, discountPercent, discountAmount, finalCharge
+        );
     }
 
     /**
@@ -55,23 +53,39 @@ public class CheckoutService {
         return rentalAgreement;
     }
 
+    private double calculateFinalCharge(double preDiscountCharge, double discountAmount) {
+        BigDecimal finalCharge = BigDecimal.valueOf(preDiscountCharge)
+                .subtract(BigDecimal.valueOf(discountAmount))
+                .setScale(2, RoundingMode.HALF_UP);
+        return finalCharge.doubleValue();
+    }
+
     /**
-     * Get the number of chargeable days
+     * Calculate the due date based on the checkout date and rental days
+     *
+     * @param checkoutDate the start date of the rental
+     * @param rentalDays   the number of rental days
+     * @return the due date
+     */
+    private LocalDate calculateDueDate(LocalDate checkoutDate, int rentalDays) {
+        return checkoutDate.plusDays(rentalDays);
+    }
+
+    /**
+     * Calculate the number of chargeable days
      * 
      * @param checkoutDate the start date of the rental
-     * @param dueDate   the due date of the rental
-     * @param toolType  the type of tool being rented
+     * @param dueDate      the due date of the rental
+     * @param toolType     the type of tool being rented
      * @return the number of chargeable days
      */
-    private int getChargeDays(LocalDate checkoutDate, LocalDate dueDate, ToolType toolType) {
-
+    private int calculateChargeDays(LocalDate checkoutDate, LocalDate dueDate, ToolType toolType) {
         long totalDays = ChronoUnit.DAYS.between(checkoutDate, dueDate) + 1; // Include endDate
 
         int weekdays = weekendHolidayService.getWeekdayCount();
         int weekends = weekendHolidayService.getWeekendCount();
         int holidays = weekendHolidayService.getHolidayCount();
 
-        // calculate which days are chargeable
         if (!toolType.isWeekendCharge()) {
             totalDays -= weekends;
         }
@@ -86,34 +100,31 @@ public class CheckoutService {
     }
 
     /**
-     * Calculated as charge days X daily charge. Resulting total rounded half up
-     * to cents
-     * 
-     * @param chargeDays the number of chargeable days
-     * @param toolType   the type of tool being rented
+     * Calculate the pre-discount charge
+     *
+     * @param chargeDays        the number of chargeable days
+     * @param dailyRentalCharge the daily rental charge
      * @return the pre-discount charge
      */
-    private double getPreDiscountCharge(int chargeDays, ToolType toolType) {
-        BigDecimal preDiscountCharge = BigDecimal.valueOf(toolType.getDailyCharge() * chargeDays)
+    private double calculatePreDiscountCharge(int chargeDays, double dailyRentalCharge) {
+        BigDecimal preDiscountCharge = BigDecimal.valueOf(dailyRentalCharge * chargeDays)
                 .setScale(2, RoundingMode.HALF_UP);
 
         return preDiscountCharge.doubleValue();
-
     }
 
     /**
-     * calculated from discount % and pre-discount charge. Resulting amount
-     * rounded half up to cents
-     * 
-     * @param discountPercent the discount percent
+     * Calculate the discount amount
+     *
+     * @param discountPercent   the discount percent
+     * @param preDiscountCharge the pre-discount charge
      * @return the discount amount
      */
-    private double getDiscountAmount(int discountPercent, double preDiscountCharge) {
+    private double calculateDiscountAmount(int discountPercent, double preDiscountCharge) {
         BigDecimal discountAmount = BigDecimal.valueOf(preDiscountCharge)
                 .multiply(BigDecimal.valueOf(discountPercent).divide(BigDecimal.valueOf(100)))
                 .setScale(2, RoundingMode.HALF_UP);
 
         return discountAmount.doubleValue();
     }
-
 }

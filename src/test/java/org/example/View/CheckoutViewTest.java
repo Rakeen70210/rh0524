@@ -26,12 +26,14 @@ public class CheckoutViewTest {
     private CheckoutView checkoutView;
     private ByteArrayOutputStream outContent;
 
+
     @BeforeEach
     public void setUp() {
         outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
         checkoutView = new CheckoutView();
     }
+
 
     @ParameterizedTest
     @CsvSource({
@@ -48,6 +50,7 @@ public class CheckoutViewTest {
         assertEquals(expected, toolCode);
     }
 
+
     @ParameterizedTest
     @CsvSource({
             "5, 5",
@@ -63,6 +66,7 @@ public class CheckoutViewTest {
         int rentalDayCount = checkoutView.getRentalDayCount();
         assertEquals(expected, rentalDayCount);
     }
+
 
     @ParameterizedTest
     @CsvSource({
