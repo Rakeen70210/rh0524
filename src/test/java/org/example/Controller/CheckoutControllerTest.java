@@ -51,12 +51,15 @@ public class CheckoutControllerTest {
 
         // Act
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-        checkoutController.processCheckout();
+            checkoutController.processCheckout();
         });
 
         // Assert
 
         assertEquals("Invalid discount percent, must be greater than 0 and less than 100", exception.getMessage());
+
+        System.out.println(exception.getMessage());
+
     }
 
     @Test
@@ -73,7 +76,6 @@ public class CheckoutControllerTest {
         int discountPercent = 10;
         double discountAmount = 0.40;
         double finalCharge = 3.58;
-
 
         when(checkoutView.getToolCode()).thenReturn(toolCode);
         when(inputValidationService.validateToolCode(toolCode)).thenReturn(true);
@@ -93,7 +95,6 @@ public class CheckoutControllerTest {
         verify(checkoutView).closeScanner();
         ArgumentCaptor<RentalAgreement> captor = ArgumentCaptor.forClass(RentalAgreement.class);
         verify(checkoutView).displayRentalAgreement(captor.capture());
-
 
         RentalAgreement rentalAgreement = captor.getValue();
         assertEquals(ToolCode.LADW, rentalAgreement.getToolCode());
@@ -128,7 +129,6 @@ public class CheckoutControllerTest {
         double discountAmount = 1.49;
         double finalCharge = 4.47;
 
-
         when(checkoutView.getToolCode()).thenReturn(toolCode);
         when(inputValidationService.validateToolCode(toolCode)).thenReturn(true);
 
@@ -145,7 +145,7 @@ public class CheckoutControllerTest {
 
         // Assert
         verify(checkoutView).closeScanner();
-        // 
+        //
         ArgumentCaptor<RentalAgreement> captor = ArgumentCaptor.forClass(RentalAgreement.class);
         verify(checkoutView).displayRentalAgreement(captor.capture());
 

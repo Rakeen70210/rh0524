@@ -1,3 +1,4 @@
+Test Scenario 5
 Tool Code: JAKR
 Tool Type: Jackhammer
 Tool Brand: Ridgid
@@ -5,8 +6,8 @@ Rental Days: 9
 Checkout Date: 07/02/15
 Due Date: 07/11/15
 Daily Rental Charge: $2.99
-Charge Days: 6
-Pre-discount Charge: $17.94
+Charge Days: 5
+Pre-discount Charge: $14.95
 Discount Percent: 0%
 Discount Amount: $0.00
-Final Charge: $17.94
+Final Charge: $14.95
