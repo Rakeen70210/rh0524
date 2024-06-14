@@ -1,3 +1,4 @@
+Test Scenario 4
 Tool Code: JAKD
 Tool Type: Jackhammer
 Tool Brand: Dewalt
@@ -5,8 +6,8 @@ Rental Days: 6
 Checkout Date: 09/03/15
 Due Date: 09/09/15
 Daily Rental Charge: $2.99
-Charge Days: 4
-Pre-discount Charge: $11.96
+Charge Days: 3
+Pre-discount Charge: $8.97
 Discount Percent: 0%
 Discount Amount: $0.00
-Final Charge: $11.96
+Final Charge: $8.97

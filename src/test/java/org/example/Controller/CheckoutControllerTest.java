@@ -123,11 +123,11 @@ public class CheckoutControllerTest {
         LocalDate checkoutDate = LocalDate.of(2015, 7, 2);
         LocalDate dueDate = LocalDate.of(2015, 7, 7);
         double dailyRentalCharge = 1.49;
-        int chargeDays = 4;
-        double preDiscountCharge = 5.96;
+        int chargeDays = 3;
+        double preDiscountCharge = 4.47;
         int discountPercent = 25;
-        double discountAmount = 1.49;
-        double finalCharge = 4.47;
+        double discountAmount = 1.12;
+        double finalCharge = 3.35;
 
         when(checkoutView.getToolCode()).thenReturn(toolCode);
         when(inputValidationService.validateToolCode(toolCode)).thenReturn(true);
@@ -176,11 +176,11 @@ public class CheckoutControllerTest {
         LocalDate checkoutDate = LocalDate.of(2015, 9, 3);
         LocalDate dueDate = LocalDate.of(2015, 9, 9);
         double dailyRentalCharge = 2.99;
-        int chargeDays = 4;
-        double preDiscountCharge = 11.96;
+        int chargeDays = 3;
+        double preDiscountCharge = 8.97;
         int discountPercent = 0;
         double discountAmount = 0;
-        double finalCharge = 11.96;
+        double finalCharge = 8.97;
 
         when(checkoutView.getToolCode()).thenReturn(toolCode);
         when(inputValidationService.validateToolCode(toolCode)).thenReturn(true);

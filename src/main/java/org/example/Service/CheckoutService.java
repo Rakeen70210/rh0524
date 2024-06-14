@@ -80,7 +80,7 @@ public class CheckoutService {
      * @return the number of chargeable days
      */
     private int calculateChargeDays(LocalDate checkoutDate, LocalDate dueDate, ToolType toolType) {
-        long totalDays = ChronoUnit.DAYS.between(checkoutDate, dueDate) + 1; // Include endDate
+        long totalDays = ChronoUnit.DAYS.between(checkoutDate, dueDate); // Include endDate
 
         int weekdays = weekendHolidayService.getWeekdayCount();
         int weekends = weekendHolidayService.getWeekendCount();
